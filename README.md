@@ -124,5 +124,4 @@ git commit -m "init"
 git remote add origin "https://github.com/kaisaohnae/kaisa-admin.git"
 git branch -m main master
 git push -u --force origin master
-
 ```
