@@ -2,6 +2,7 @@
 
 import {useEffect} from 'react';
 import {useRouter} from '@/components/hooks/use-custom-router';
+import {usePathname} from "next/navigation";
 
 type Props = {
   onReady: () => void;
@@ -9,6 +10,7 @@ type Props = {
 
 export default function OrgValidator({onReady}: Props) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const onReadyCheck = async () => {
     try {
@@ -24,7 +26,14 @@ export default function OrgValidator({onReady}: Props) {
   };
 
   useEffect(() => {
-  }, []);
+    const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("auth_token="));
+
+    if (!token && pathname !== "/login") {
+      router.replace("/login");
+    }
+  }, [pathname]);
 
   useEffect(() => {
     const refresh = async () => {

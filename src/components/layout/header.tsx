@@ -11,7 +11,7 @@ export default function Header() {
     <header id="header">
       <h1>
         {/*<Link href="/"><img src={process.env.NEXT_PUBLIC_IMG_HOST + '/common/logo.png'} width={140} alt=''/></Link>*/}
-        <Link href="/"><IconLogo /></Link>
+        <Link href="/">111</Link>
       </h1>
       <Menu />
     </header>

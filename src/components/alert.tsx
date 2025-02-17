@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useCallback } from 'react';
-import alertStore from '@/components/store/alert-store';
+import useAlertStore from '@/store/use-alert-store';
 
 export default function AlertComponent() {
-  const alert = alertStore(useCallback((state) => state.alert, []));
-  const { hideAlert } = alertStore.getState();
+  const alert = useAlertStore(useCallback((state) => state.alert, []));
+  const { hideAlert } = useAlertStore.getState();
   if (!alert) {
     return null;
   }

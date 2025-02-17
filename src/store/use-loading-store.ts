@@ -1,3 +1,5 @@
+'use client';
+
 import { create } from 'zustand';
 
 type State = {
@@ -10,10 +12,11 @@ type Actions = {
   stopLoading: () => void;
 };
 
-const loadingStore = create<State & Actions>((set) => ({
+const useLoadingStore = create<State & Actions>((set, get) => ({
   loading: false,
   target: '',
   startLoading: (o?: any) => {
+    // console.log(get().loading);
     set(() => ({
       loading: true,
       target: (o && o.target) ? o.target : ''
@@ -27,4 +30,4 @@ const loadingStore = create<State & Actions>((set) => ({
     }));
   },
 }));
-export default loadingStore;
+export default useLoadingStore;

@@ -27,7 +27,7 @@ type AlertProps = {
   button?:  any; // ButtonProps | ButtonProps[];
 };
 
-const alertStore = create<State & Actions>((set) => ({
+const useAlertStore = create<State & Actions>((set) => ({
   alert: null,
   error: false,
   showAlert: (o: AlertProps) => {
@@ -42,6 +42,6 @@ const alertStore = create<State & Actions>((set) => ({
   hideError: () => {
     set(() => ({ error: false }));
   },
-}));
+})) as any;
 
-export default alertStore;
+export default useAlertStore;

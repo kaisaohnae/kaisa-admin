@@ -2,7 +2,6 @@
 
 import React, {useEffect, useState} from 'react';
 import Title from '@/components/layout/title';
-import worksList from '@/data/worksList';
 
 export default function Page() {
   const title = '';
@@ -19,7 +18,7 @@ export default function Page() {
       <div className="works">
         <ul>
           {
-            worksList.map((o: any, idx: number) => (
+            [].map((o: any, idx: number) => (
               <li
                 key={idx}
               >
