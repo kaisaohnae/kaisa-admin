@@ -14,8 +14,8 @@ export default function Login() {
   const router = useRouter();
 
   const [param, setParam] = useState({
-    userId: '',
-    pwd: '',
+    userId: 'kaisa',
+    pwd: 'a111999',
     remember: false,
   });
 
@@ -39,7 +39,7 @@ export default function Login() {
     if (param.remember) {
       setting.userId = param.userId;
     } else {
-      setting.userId = '';
+      setting.userId = 'kaisa';
     }
     try {
       const res = await UserService.login(param);

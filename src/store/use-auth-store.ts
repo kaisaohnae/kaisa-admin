@@ -1,7 +1,5 @@
-'use client';
-
-import {create} from 'zustand';
-import useSettingStore from '@/store/use-setting-store';
+import {create, StoreApi, UseBoundStore} from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export interface UserType {
   userId: string;
@@ -23,7 +21,7 @@ export interface MenuType {
 
 export interface State {
   active: boolean;
-  userInfo: any; // RemovableRef<UserType>;
+  userInfo: any;
   menuList: any;
   codeList: any;
   token: any;
@@ -35,29 +33,36 @@ export interface Actions {
   getUserInfo: () => object;
 }
 
-export const useAuthStore = create<State & Actions>((set, get) => ({
-  active: false,
-  userInfo: JSON.parse(localStorage.getItem('userInfo') || '{}'), // JSON.stringify(
-  codeList: JSON.parse(localStorage.getItem('codeList') || '{}'),
-  menuList: JSON.parse(localStorage.getItem('menuList') || '{}'),
-  token: localStorage.getItem('token'),
-  loginSuccess: async (data: any) => {
-    try {
-      // const { data: response1 }: { data: JsonResponseType; } =
-      set({
-        userInfo: data.userInfo
-      });
-      console.log(useSettingStore.getState());
-    } catch (error) {
-      console.error('Error fetching data from database:', error);
+export const useAuthStore: UseBoundStore<StoreApi<State & Actions>> = create(
+  persist<State & Actions>(
+    (set, get) => ({
+      active: false,
+      userInfo: [],
+      codeList: [],
+      menuList: [],
+      token: null,
+      loginSuccess: async (data: any) => {
+        try {
+          set({
+            userInfo: data.userInfo,
+            codeList: data.codeList,
+            menuList: data.menuList,
+            token: data.token,
+          });
+        } catch (error) {
+          console.error('Error fetching data from database:', error);
+        }
+      },
+      loginFail: async () => {},
+      getUserInfo: () => {
+        return get().userInfo;
+      }
+    }),
+    {
+      name: 'auth-storage', // 로컬스토리지에 저장될 키 이름
+      // getStorage: () => (typeof window !== 'undefined' ? localStorage : {}), // 클라이언트에서만 localStorage 사용
     }
-  },
-  loginFail: async () => {
-
-  },
-  getUserInfo: () => {
-    return get().userInfo;
-  }
-}));
+  )
+);
 
 export default useAuthStore;

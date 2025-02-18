@@ -1,13 +1,11 @@
 import axios, {AxiosInstance, AxiosError} from 'axios';
 import useLoadingStore from '@/store/use-loading-store';
 
-let baseURL = process.env.NEXT_PUBLIC_API_URL;
-
 const { startLoading, stopLoading } = useLoadingStore.getState();
 
 const service: AxiosInstance = axios.create({
   timeout: 10000,
-  baseURL: baseURL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 service.interceptors.request.use(
   (request: any) => {

@@ -5,7 +5,6 @@ import MetaTags from '@/components/layout/meta-tags';
 import Alert from '@/components/alert';
 import Loading from '@/components/loading';
 import LayoutSub from '@/app/layout-sub';
-import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 
 export const metadata: Metadata = {

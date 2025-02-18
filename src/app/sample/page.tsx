@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import ButtonLogout from '@/components/auth/button-logout';
 import Header from "@/components/layout/header";
 
-export default function ProtectedPage() {
+export default function SamplePage() {
   useEffect(() => {
 
   }, []);
@@ -13,7 +13,6 @@ export default function ProtectedPage() {
     <>
       <Header/>
       <h1>Sample Page</h1>
-      <p>You are logged in!</p>
       <ButtonLogout />
     </>
   );
