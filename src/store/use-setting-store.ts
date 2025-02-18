@@ -1,35 +1,35 @@
 'use client';
 
+import dayjs from 'dayjs';
 import {create} from 'zustand';
 import Cookies from 'react-cookies';
 
-// 기본 구조 설정
-const structure = {
-  id: '',
-  menu: {
-    active: false,
-  },
-  hash: '',
-  tab: {
-    idx: 0,
-  },
+export interface State {
+  tabIndex: number;
+  favList: any;
+  menuActive: boolean;
+  path: string;
+  userId: string;
+}
+
+export interface Actions {
+  setTabIndex: any;
+  setUserId: any;
+}
+
+export const useSettingStore = create<State & Actions>((set, get) => ({
+  tabIndex: 0,
   favList: [],
-};
-
-const useSettingStore = create((set) => {
-  const settings = Cookies.load('settings');
-
-  // 상태 초기화
-  const initialState = settings ? JSON.parse(settings) : structure;
-
-  return {
-    settings: initialState,
-    setState: () => {
-      const currentSettings = JSON.stringify(initialState);
-      Cookies.save('settings', currentSettings, {path: '/'});
-      set({settings: initialState});
-    },
-  };
-}) as any;
+  menuActive: false,
+  path: '',
+  userId: Cookies.load('userId') || '', // 쿠키에서 초기값 로드,
+  setTabIndex: (index: number) => {
+    set({tabIndex: index});
+  },
+  setUserId: (userId: string) => {
+    Cookies.save('userId', userId, {path: '/', expires: dayjs().add(30, 'day').toDate()});
+    set({userId});
+  },
+}));
 
 export default useSettingStore;

@@ -1,15 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useCookies } from 'react-cookie';
-import { useRouter } from 'next/navigation';
+import {useState, useEffect} from 'react';
+import {useRouter} from '@/components/hooks/use-custom-router';
 import UserService from '@/service/common/user-service';
 import useSettingStore from '@/store/use-setting-store';
 import useAuthStore from '@/store/use-auth-store';
 import useAlertStore from '@/store/use-alert-store';
 
 export default function Login() {
-  const [cookies, setCookie, removeCookie] = useCookies(['settings']);
   const setting = useSettingStore();
   const auth = useAuthStore();
   const alert = useAlertStore();
@@ -22,15 +20,14 @@ export default function Login() {
   });
 
   useEffect(() => {
-    const settings = cookies.settings;
-    if (!settings) {
-      setting.setState();
-    }
-    setParam(prev => ({ ...prev, userId: setting.userId }));
-  }, [cookies, setting]);
+    setParam(prev => ({
+      ...prev,
+      userId: setting.userId
+    }));
+  }, [setting.userId]);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const {name, value, type, checked} = e.target;
     setParam(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
@@ -47,11 +44,14 @@ export default function Login() {
     try {
       const res = await UserService.login(param);
       if (res) {
-        setting.setState();
         auth.loginSuccess(res.data);
+        router.push({
+          pathname: '/main',
+          query: {}
+        });
       } else {
         auth.loginFail();
-        alert.open({ title: null, message: '회원정보와 일치하지 않습니다.' });
+        alert.open({title: null, message: '회원정보와 일치하지 않습니다.'});
       }
     } catch (err) {
       console.error(err);
