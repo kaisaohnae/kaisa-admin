@@ -15,6 +15,7 @@ export interface State {
 export interface Actions {
   setTabIndex: any;
   setUserId: any;
+  setMenuActive: any;
 }
 
 export const useSettingStore = create<State & Actions>((set, get) => ({
@@ -30,6 +31,9 @@ export const useSettingStore = create<State & Actions>((set, get) => ({
     Cookies.save('userId', userId, {path: '/', expires: dayjs().add(30, 'day').toDate()});
     set({userId});
   },
+  setMenuActive: (active: boolean) => {
+    set({menuActive: active});
+  }
 }));
 
 export default useSettingStore;

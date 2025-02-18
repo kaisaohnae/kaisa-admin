@@ -30,6 +30,7 @@ export interface State {
 export interface Actions {
   loginSuccess: any;
   loginFail: any;
+  logout: any;
   getUserInfo: () => object;
 }
 
@@ -54,6 +55,9 @@ export const useAuthStore: UseBoundStore<StoreApi<State & Actions>> = create(
         }
       },
       loginFail: async () => {},
+      logout: async () => {
+        window.location.href = '/login';
+      },
       getUserInfo: () => {
         return get().userInfo;
       }

@@ -1,254 +1,144 @@
 @charset "utf-8";
 
-/*
-body::-webkit-scrollbar {width:10px; height:10px; background:transparent; display:block; border:0}
-body::-webkit-scrollbar-thumb {background:#ddd; border:4px solid transparent; background-clip:content-box; cursor:pointer;}
-*/
-body::-webkit-scrollbar {display:none;}
+::-webkit-scrollbar {width:17px; height:17px; background:#fff; display:block; border-left:1px solid #eee;}
+::-webkit-scrollbar-thumb {background:#ddd; border:4px solid transparent; background-clip:content-box; cursor:pointer;}
+.wrap::-webkit-scrollbar,
+#contents::-webkit-scrollbar {display:none;}
 
-#container,
-#header,
-#side,
-#contents,
-#menu ul li {transition:0.2s all linear;}
-.tui-grid-container div {transition: none;}
+.pointer {cursor:pointer;}
+.underline {text-decoration:underline;}
+.show {display:block;}
+.hide {display:none;}
 
-#container {width:100%;}
-#header {width:100%; height:170px; position:relative;}
-#header h1 {text-align:center; padding:30px 0 20px 0;}
-#header .loginInfo {position:absolute; right:10px; top:10px; font-size:11px; white-space:nowrap; display:none;}
-.loginInfo span {color:#999; display:inline-block; margin:0 5px; cursor:pointer;}
-.loginInfo a {color:#999;}
-#menu {width:100%; padding-bottom:10px; height:60px; position:absolute; left:0; bottom:0;}
-#menu ul {width:100%; text-align:center; white-space:nowrap; overflow:auto;}
-#menu ul::-webkit-scrollbar {display: none;}
-#menu ul li {display:inline-block; font-weight:bold; line-height:50px; padding:0 10px;}
-#menu ul li a {display:inline-block; color:#000; padding:0 10px;}
-#menu ul li.on a {color:#ff5500; cursor:default;}
+form.search {width:100%; white-space:nowrap;}
+form.search fieldset {width:100%; line-height:40px; padding:5px 10px 8px 10px; border:0.5px solid #ddd; background:#eee; display:block; border-radius: 5px;}
+form.search fieldset table th {padding:1px 20px 1px 10px; color:#333; height:45px;}
+form.search fieldset table td {padding:1px 1px 1px 1px; height:45px;}
+form.search fieldset legend {display:none;}
 
-#menu.fixed ul {position:fixed; z-index:1000; left:0; top:0; background:#fff; box-shadow:5px 5px 5px rgba(0,0,0,0.2);}
+.btnWrap {padding:10px 0 35px 0; text-align:center; position:relative;}
+.btnWrap .totalCount {position:absolute; right:0; bottom:0; font-size:11px;}
 
-#content {width:100%; clear:both; padding:10px; min-height:600px;}
-#footer {width:100%; clear:both; font-size:11px; padding:50px 0 15px 0; text-align:center;}
-#footer .link {display:block; width:32px; height:30px; margin:10px auto;}
+.btnWrap .crud {position:absolute; left:0; bottom:5px;}
+.btnWrap .crud button {line-height:19px; height:20px; padding:0 5px 0 0; font-size:11px; background:#eee; border:1px solid #ddd; color:#555; text-shadow:none;}
+.btnWrap .crud button .icon {line-height:19px; font-size:12px;}
+.btnWrap .crud button.add .icon {color:#000;}
+.btnWrap .crud button.save .icon {color:#047a00;}
+.btnWrap .crud button.del .icon {color:#b63434;}
 
-.ready {text-align:center; padding: 100px 0;}
 th.required:after {content:'*'; display:inline-block; font-size:12px; color:#ff0000; padding-left:5px;}
 
-#error {width:100%; text-align:center; padding: 100px 0;}
-#error h2 {font-size:30px; color:#000;}
-#error .logo {padding-bottom:50px;}
-#error p {font-size:20px; color:#333; line-height:35px; padding: 30px 0;}
-#error p strong {font-size:30px; color:#ff5500; line-height:50px;}
-#error p.guide {font-size:14px; color:#999;}
+#app {width:100%; height:100%;}
 
-/* loading */
-#loading {width:100%; height:100%; position:absolute; left:0; top:0; background:rgba(0,0,0,0); z-index:9000;}
-#loading .loadingCircle {width:100px; height:100px; position:fixed; left:50%; top:50%; margin:-50px 0 0 -50px;}
-@keyframes animation {
-  0% {
-    stroke-dasharray: 2 98;
-    stroke-dashoffset: -105;
-  }
-  50% {
-    stroke-dasharray: 80 10;
-    stroke-dashoffset: -160;
-  }
-  100% {
-    stroke-dasharray: 2 98;
-    stroke-dashoffset: -200;
-  }
-}
-#spinner {
-    fill:transparent;
-    stroke:#ff5500;
-    stroke-width:8px;
-    stroke-linecap:round;
-    filter:url(#shadow);
-    transform-origin: center;
-    animation-name: animation;
-    animation-duration: 1.2s;
-    animation-timing-function: cubic-bezier(.78,.2,.95,.63);
-    animation-iteration-count: infinite;
-}
-/* print */
+.popup {width:100%; height:100%; position:fixed; left:0; top:0; background:rgba(0,0,0,0.3); z-index:300;}
+.popupWrap {background:#fff; padding:10px; height:90%; width:80%; position:fixed; left:10%; top:5%; z-index:300; border:1px solid rgba(0,0,0,0.5); box-shadow:0 0 5px rgba(0,0,0,0.3);}
+
+.popup h3 {padding:10px 0 15px 5px; color:#333; font-size:16px; font-weight:bold;}
+.popup .close {position:absolute; right:10px; top:10px; cursor: pointer;}
+.popup .close .icon {color:#333; font-size:26px;}
+.popup form {width:100%; height:calc(100% - 60px); overflow: auto;}
+.popup table.popT {width:100%;}
+.popup table.popT th.th {width:120px; padding:5px 10px; border:1px solid rgba(0,0,0,0.2); color:#333; background:#f7f9fc;}
+.popup table.popT td.td {padding:5px; border:1px solid rgba(0,0,0,0.2);}
+.popup table.popT td.td input.tit {width:70%;}
+
+#side ul li span.name u {color:#ff2600;} /* 뒤늦게 v-html 한곳은 style 안먹힐때가... */
+
+.no-list {text-align:right;}
+
 @media print {
-	html,
-	body {height:auto;}
-	#header,
-	#menu,
-	#footer,
-	span.print,
-	ul.tab,
-	#content {display:none;}
-	#print {display:block;}
+  html,
+  body {height:auto;}
+  #header,
+  #menu,
+  #footer,
+  span.print,
+  ul.tab,
+  #content {display:none;}
+  #print {display:block;}
 }
 
-/* post */
-#blog {width:100%; position:relative; line-height:30px;}
-#blog .btnWrap {position:absolute; right:0; top:0;}
-#blog .btnWrap button {background:#888; border:1px solid #555;}
-#blog .writerInfo {font-size:11px; color:#999; text-align:right;}
-#blog .writerInfo span {display:inline-block; padding:0 10px;}
+.detail-content {width: 100%; height: 100%;}
+.detail-content h2 {padding:15px 0; color:#000; font-weight:bold; font-size:20px;}
+.detail-scroll {height:calc(100% - 110px); width:100%; overflow:auto; padding:10px 0;}
+.detail-bottom {text-align: center; width: 100%; padding: 10px; }
 
-#blog .btnBottomWrap {text-align:right; padding:10px 0; border-top:1px solid #ccc; margin-top:30px;}
-#blog .btnBottomWrap button {background:#888; border:1px solid #555;}
+.detail-table {width:100%;}
+.detail-table th {width: 150px; padding: 10px; background:#f7f9fc; border:1px solid #ccd4e1;}
+.detail-table td {padding: 10px; border:1px solid #ccd4e1;}
+.detail-table td input[type="text"] {width:100%;}
+.detail-table td textarea {width:100%; min-height:250px;}
 
-#blog h1,
-#blog h2,
-#blog h3,
-#blog h4,
-#blog h5,
-#blog h6 {color:#000; border-bottom:1px dashed #eee; font-weight:bold; padding:20px 0 10px 0; margin:15px 0; text-shadow:2px 2px 2px rgba(0,0,0,0.2);}
+#login { width: 100%; height: 100%; padding-top: 100px; }
+#login form { width: 400px; margin: 0 auto; border-radius: 10px; overflow: hidden; background: #fff; }
+#login form fieldset { width: 100%; padding: 30px 0; }
+#login form fieldset h1 { text-align: center; padding: 20px 0; font-size: 14px; color: #333; }
+#login form fieldset img { width: 50px; display: block; margin: 0 auto; }
+#login form fieldset label { width: 80%; margin: 10px auto; display: block; padding: 5px; }
+#login form fieldset .label { background: #eee; border: 1px solid #ddd; border-radius: 3px; }
+#login form fieldset .label input { width: calc(100% - 40px); border: 1px solid #eee; background: #eee; }
+#login form fieldset .label input:focus { outline: 1px solid #eee; }
+#login form fieldset .remember { display: inline-block; padding-left: 3px; }
+#login form fieldset button { display: block; width: 80%; clear: both; background: #3e22bc; border: 1px solid #2d11ac; margin: 10px auto; color: #fff; line-height: 35px; height: 40px; font-size: 14px; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3); }
+#login form fieldset button:hover { background: #30199a; }
 
-#blog h1 {font-size:28px; line-height:35px; padding:0 50px 10px 0; border-bottom:1px solid #ccc;}
-#blog h2 {font-size:23px; line-height:33px;}
-#blog h3 {font-size:20px; line-height:30px;}
-#blog h4 {font-size:18px; line-height:28px;}
-#blog h5 {font-size:16px; line-height:26px;}
-#blog h6 {font-size:14px; line-height:24px;}
+#main h2 { color: #000; font-size: 14px; padding: 10px 0; }
+#main .orderState { width: 100%; clear: both; white-space: nowrap; text-align: center; padding: 20px 0; }
+#main .orderState li { width: 25%; display: inline-block; line-height: 30px; height: 100px; border-right: 1px solid #eee; color: #000; }
+#main .orderState li:last-child { border-right: 0; }
+#main .orderState li .codeName { padding-top: 10px; font-size: 14px; }
+#main .orderState li .count { font-size: 28px; padding-top: 10px; font-weight: bold; }
+#main .orderState li.reserving { color: #ff5500; }
+#main .orderState li.canceled { color: #bbb; }
+#main .orderState li.canceled .count { text-decoration: line-through; }
+#main .orderState li.paymentCanceled { color: #999; }
+#main .orderState li.paymentCompleted { color: #000; }
+#main .totalPrice { text-align: right; font-size: 13px; color: #000; padding: 5px 10px 0 0; }
 
-#blog table {width:100%;}
-#blog table th {border:1px solid #ddd; padding:10px;}
-#blog table td {border:1px solid #ddd; padding:10px;}
+#header {width:100%; height:100px; overflow:hidden; padding:10px 10px 0 10px; position:relative; z-index:2;}
+#header .userInfo {text-align:right; padding:0 0 0 0; color:#333;}
+#header .userInfo li {display:inline-block; padding:0 5px;}
+#header .btnMenu {width:30px; height:50px; position:fixed; z-index:91; left:13px; top:13px; cursor:pointer;}
+#header .btnMenu ul {width:30px; position:relative;}
+#header .btnMenu ul li {position:absolute; width:30px; height:3px; background:#111; margin-bottom:5px; border-radius:3px;}
+#header .btnMenu ul li:nth-child(1) {left:0; top:0;}
+#header .btnMenu ul li:nth-child(2) {left:0; top:10px;}
+#header .btnMenu ul li:nth-child(3) {left:0; top:20px;}
+#header .btnMenu:hover ul li {background:#000;}
+#header .btnMenu:hover ul li:nth-child(1) {transform: rotate(45deg); width:20px; left:14px; top:4px;}
+#header .btnMenu:hover ul li:nth-child(3) {transform: rotate(-45deg); width:20px; left:14px; top:16px;}
 
-#blog img {width:100%; max-width:1000px; margin:15px 0; border:1px solid #ccc; box-shadow:5px 5px 5px rgba(0,0,0,0.1);}
-#blog p strong {font-weight:bold; color:#ff5500;}
-#blog .content {width:100%; padding:15px;}
-#blog .content ul,
-#blog .content ol {padding:10px 0 10px 20px;}
-#blog .content ul li {list-style-type: disc;}
-#blog .content ol li {list-style-type: decimal;}
+#header .tab {height:40px; padding:0; margin-top:27px; width:100%; overflow:auto; text-align:left; white-space: nowrap;}
+#header .tab ul {width:calc(100% - 32px); overflow:hidden; height:40px;}
+#header .tab ul li {height:40px; border:1px solid #ccc; color:#777; border-radius:0 8px 0 0; background:#eee; line-height:40px; padding:0 15px 0 10px; display:inline-block; position:relative;}
+#header .tab ul li.active {background:#fff; color:#222; border-bottom:1px solid #fff;}
+#header .tab ul li .name {cursor:pointer; display:inline-block; padding:0 10px;}
+#header .tab ul li .name:hover {color:#000;}
+#header .tab ul li a {color:#333;}
+#header .tab ul li .icon.home  {font-size:23px; color:#333; vertical-align:middle; cursor:pointer;}
+#header .tab ul li .close {position:absolute; right:-4px; top:-3px; color:#aaa; cursor:pointer; width:20px; height:20px; overflow:hidden;}
+#header .tab ul li .close:hover {transform: rotate(90deg); right:-5px; top:-2px; color:#666;}
+#header .tab .closeAll {cursor:pointer; border:1px solid #aaa; position:absolute; right:2px; color:#666; bottom:4px; width:31px; height:30px; line-height:30px;}
+#header .tab .closeAll:hover {color:#000; background:rgba(255,255,255,0.2);}
+#header.menuOn .btnMenu {left:230px;}
+#header.menuOn .btnMenu ul li:nth-child(1) {transform: rotate(-45deg); width:20px; left:-4px; top:4px;}
+#header.menuOn .btnMenu ul li:nth-child(3) {transform: rotate(45deg); width:20px; left:-4px; top:16px;}
 
-/* auth */
-#login {width:100%; max-width:500px; clear:both; margin:20px auto; padding:80px 15px 130px 15px; border:1px solid #ddd; border-radius:5px; background:#fff; box-shadow:3px 3px 3px rgba(0,0,0,0.05); position:relative;}
-#login h2 {color:#000; text-align:center; padding:0; font-size:20px; display:block;}
-#login p.txt {color:#999; padding:10px 0 20px 0; text-align:center;}
-#login form {width:100%; max-width:300px; margin:0 auto; position:relative;}
-#login label {width:calc(100% - 100px); display:block; margin-bottom:10px; position:relative;}
-#login label .icon {position:absolute; left:2px; top:6px; color:#aaa;}
-#login input[type="text"],
-#login input[type="password"] {width:100%; padding-left:28px; color:#000;}
-#login button {width:90px; height:80px; position:absolute; right:0; top:0;}
-#login p.find {position:absolute; left:0; bottom:25px; width:100%; font-size:11px; color:#333; text-align:center;}
-#login p.find span {display:inline-block; padding:0 10px;}
-#login p.find a {color:#333;}
-#login .txt_error {color:#ff0000; font-size:11px;}
-
-/* auth */
-#join {width:100%; max-width:500px; clear:both; margin:20px auto; padding:80px 15px 130px 15px; border:1px solid #ddd; border-radius:5px; background:#fff; box-shadow:3px 3px 3px rgba(0,0,0,0.05); position:relative;}
-#join h2 {color:#000; text-align:center; padding:0; font-size:20px; display:block;}
-#join p.txt {color:#999; padding:10px 0 20px 0; text-align:center;}
-#join form {width:100%; max-width:300px; margin:0 auto; position:relative;}
-#join label {width:100%; display:block; margin-bottom:10px; position:relative;}
-#join label .icon {position:absolute; left:2px; top:6px; color:#aaa;}
-#join label .tit {font-size:11px;}
-#join input[type="text"],
-#join input[type="password"] {width:100%; color:#000;}
-#join button {width:100%;}
-#join p.find {position:absolute; left:0; bottom:25px; width:100%; font-size:11px; color:#333; text-align:center;}
-#join p.find span {display:inline-block; padding:0 10px;}
-#join p.find a {color:#333;}
-#join .txt_error {color:#ff0000; font-size:11px;}
-
-/* char */
-#char {width:600px; clear:both; margin:0 auto; overflow:auto;}
-#char .selectWrap {width:250px; float:left; margin:0 auto; padding-top:80px;}
-#char ol { display:block; padding-left:35px; position:relative;}
-#char ol li {width:14px; height:14px; vertical-align:middle; border-radius:100%; cursor:pointer; display:inline-block; background:#ddd; margin:2px; font-size:0; text-indent:-900px; overflow:hidden;}
-#char ol li.on {background:#555; width:16px; height:16px;}
-#char ol::before {content:''; position:absolute; left:5px; top:1px; line-height:20px; font-size:11px;}
-#char ol.hair::before {content:'머리';}
-#char ol.eyebrow::before {content:'눈썹';}
-#char ol.eye::before {content:'눈';}
-#char ol.nose::before {content:'코';}
-#char ol.mouth::before {content:'입';}
-#char .base {scale:0.9; float:left; width:250px; height:270px; position:relative; background-image:url('https://img.kaisa.co.kr/common/char.png'); margin:0 auto;}
-#char .base > div {background-image:url('https://img.kaisa.co.kr/common/char.png'); position:absolute;}
-div.hair {width:250px; height:270px; left:0; top:0; background-position:-250px 0;}
-div.hair.hair1 {background-position:-250px -270px;}
-div.hair.hair2 {background-position:-250px -540px;}
-div.hair.hair3 {background-position:-250px -810px;}
-div.hair.hair4 {background-position:-250px -1080px;}
-div.hair.hair5 {background-position:-250px -1350px;}
-div.hair.hair6 {background-position:-250px -1620px;}
-div.hair.hair7 {background-position:-250px -1890px;}
-div.hair.hair8 {background-position:-250px -2160px;}
-
-div.eyebrow {width:150px; height:40px; left:50px; top:100px; background-position:-500px 0;}
-div.eyebrow.eyebrow1 {background-position:-500px -40px;}
-div.eyebrow.eyebrow2 {background-position:-500px -80px;}
-div.eyebrow.eyebrow3 {background-position:-500px -120px;}
-div.eyebrow.eyebrow4 {background-position:-500px -160px;}
-div.eyebrow.eyebrow5 {background-position:-500px -200px;}
-
-div.eye {width:150px; height:70px; left:50px; top:110px; background-position:-650px 0;}
-div.eye.eye1 {background-position:-650px -70px;}
-div.eye.eye2 {background-position:-650px -140px;}
-div.eye.eye3 {background-position:-650px -210px;}
-div.eye.eye4 {background-position:-650px -280px;}
-div.eye.eye5 {background-position:-650px -350px;}
-div.eye.eye6 {background-position:-650px -420px;}
-div.eye.eye7 {background-position:-650px -490px;}
-div.eye.eye8 {background-position:-650px -560px;}
-div.eye.eye9 {background-position:-650px -630px;}
-
-div.nose {width:50px; height:40px; left:100px; top:170px; background-position:-800px 0;}
-div.nose.nose1 {background-position:-800px -40px;}
-div.nose.nose2 {background-position:-800px -80px;}
-div.nose.nose3 {background-position:-800px -120px;}
-div.nose.nose4 {background-position:-800px -160px;}
-div.nose.nose5 {background-position:-800px -200px;}
-
-div.mouth {width:150px; height:80px; left:50px; top:170px; background-position:-850px 0;}
-div.mouth.mouth1 {background-position:-850px -80px;}
-div.mouth.mouth2 {background-position:-850px -160px;}
-div.mouth.mouth3 {background-position:-850px -240px;}
-div.mouth.mouth4 {background-position:-850px -320px;}
-div.mouth.mouth5 {background-position:-850px -400px;}
-div.mouth.mouth6 {background-position:-850px -480px;}
-
-@media screen and (max-width:600px) {
-  #char {width:100%; padding-bottom:30px;}
-	#char .selectWrap {float:none; padding-top:0;}
-	#char .base {float:none;}
-}
-
-
-.main {width:100%; max-width:1000px; margin:0 auto; padding-top:100px;}
-.main img {width:100%; max-width:530px; display:block; margin:0 auto;}
-
-.works {width:100%; max-width:1000px; margin:0 auto;}
-.works ul {width:100%;}
-.works ul li {width:33.3%; display:inline-block; padding:10px; position:relative;}
-.works ul li p {font-size:11px; color:#888;}
-.works ul li p strong {font-size:11px; color:#333; font-weight:normal;}
-.works ul li img {transition:0.3s all linear; width:100%; min-height:120px; border:1px solid rgba(0,0,0,0.2); box-shadow:5px 5px 5px rgba(0,0,0,0.1); opacity:1;}
-.works ul li div {transition:0.3s all linear; opacity:0; overflow:hidden; position:absolute; left:10px; bottom:10px; width:calc(100% - 20px); padding:10px; background:rgba(0,0,0,0.7); color:#fff; text-shadow:1px 1px 1px rgba(0,0,0,0.3); font-size:11px; line-height:17px; font-weight:normal;}
-.works ul li:hover div {opacity:0;}
-.works ul li:hover img {border:1px solid rgba(0,0,0,0.7);}
-
-@media screen and (max-width:700px) {
-  .works ul li {width:50%;}
-}
-@media screen and (max-width:400px) {
-  .works ul li {width:100%;}
-}
-
-.illustrator {width:100%; clear:both;}
-.illustrator ul {column-count:5; font-size:0; width:100%; margin:0 auto; max-width:1000px; clear:both;}
-.illustrator ul li {display:inline-block; padding:5px; position:relative; width:100%;}
-.illustrator ul li img {width:100%; min-height:67px; box-shadow:5px 5px 5px rgba(0,0,0,0.1); border:1px solid #eee;}
-
-@media screen and (max-width:800px) {
-  .illustrator ul {column-count:4;}
-}
-@media screen and (max-width:700px) {
-  .illustrator ul {column-count:3;}
-}
-@media screen and (max-width:500px) {
-  .illustrator ul {column-count:2;}
-}
-@media screen and (max-width:400px) {
-  .illustrator ul {column-count:1;}
-}
+#side.menuOn {left:0;}
+#side {width:220px; box-shadow:0 0 3px 1px rgba(0,0,0,0.5); background:#222; border-right:1px solid #000; height:100%; position:fixed; left:-230px; top:0; z-index:200; white-space:nowrap;}
+#side h1 {width:100%; text-align:left; overflow:hidden; cursor:pointer;}
+#side h1 img {width:50%; margin:10px 0 -20px 0;}
+#side .search {padding:10px;}
+#side .search input {width:100%; background:#333; border:0; color:#000; padding: 0 15px;}
+#side .search input::placeholder {color:#777;}
+#side .wrap {width:100%; padding-bottom:10px; height:calc(100% - 135px); border-right:1px solid rgba(255,255,255,0.1); overflow:auto;}
+#side .menu {width:220px; height:40px; overflow:hidden;}
+#side .menu.on {height:auto;}
+#side .menu h2 {padding:0 20px; background:#222; color:#555; height:40px; line-height:40px; display:none;}
+#side ul {width:100%;}
+#side ul li {padding:0; color:#bbb; cursor:pointer; height:45px; line-height:45px; position:relative; overflow:hidden;}
+#side ul li span.pre {position:absolute; font-size:13px; left:15px; top: 10px; opacity: 0.5;}
+#side ul li span.name {display:block; padding:0 45px; border-bottom:1px dashed #2e2e2e; height:45px; line-height:45px;}
+#side ul li span.fav {position:absolute; right:0; width:45px; height: 45px; top:0; line-height:45px; opacity: 0.5;}
+#side ul li span.fav.on {opacity:1; color:rgb(229, 255, 0);}
+#side ul li.active {color:#FF9933;}

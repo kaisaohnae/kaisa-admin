@@ -1,35 +1,80 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
-import Title from '@/components/layout/title';
+import {useState, useEffect, useMemo} from 'react';
+import MainService from '@/service/common/main-service';
+import {Line} from 'react-chartjs-2';
+import {Chart, registerables} from 'chart.js';
+import Header from "@/components/layout/header";
 
-export default function Page() {
-  const title = '';
+Chart.register(...registerables);
 
-  const [mounted, setMounted] = useState<boolean>(false);
+const Dashboard = () => {
+  const [data, setData] = useState({
+    monthlyData: Array.from({length: 12}, (_, i) => ({reserveMonth: (i + 1).toString().padStart(2, '0'), sumPrice: 0})),
+    orderStateData: [
+      {orderStateCount: 0, orderStateCode: '예약중'},
+      {orderStateCount: 0, orderStateCode: '예약취소'},
+      {orderStateCount: 0, orderStateCode: '결제취소'},
+      {orderStateCount: 0, orderStateCode: '결제완료'},
+    ],
+    totalPrice: 0,
+  });
 
   useEffect(() => {
-    setMounted(true);
+    const fetchDashboard = async () => {
+      try {
+        const res = await MainService.dashboard({});
+        setData({
+          totalPrice: res.totalPrice,
+          monthlyData: res.monthlyData,
+          orderStateData: res.orderStateData,
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchDashboard();
   }, []);
 
-  return mounted && (
-    <div>
-      <Title title={title}/>
-      <div className="works">
-        <ul>
-          {
-            [].map((o: any, idx: number) => (
-              <li
-                key={idx}
-              >
-                <p>{o.date} - <strong>{o.title}</strong></p>
-                <img src={o.url} alt='' />
-                <div>{o.skil}</div>
-              </li>
-            ))
-          }
-        </ul >
+  const getStateCount = (orderStateCode) => {
+    const state = data.orderStateData.find((item) => item.orderStateCode === orderStateCode);
+    return state ? state.orderStateCount : 0;
+  };
+
+  const chartData = useMemo(() => {
+    return {
+      labels: data.monthlyData.map((d) => d.reserveMonth),
+      datasets: [
+        {
+          label: '매출',
+          data: data.monthlyData.map((d) => d.sumPrice),
+          borderColor: '#9f7aea',
+          backgroundColor: 'rgba(159, 122, 234, 0.5)',
+          fill: true,
+        },
+      ],
+    };
+  }, [data.monthlyData]);
+
+  return (
+    <>
+      <Header />
+      <div id="main">
+        <ul className="orderState">
+          {['예약중', '예약취소', '결제취소', '결제완료'].map((state) => (
+            <li key={state} className={state}>
+              <p className="codeName">{state}</p>
+              <p className="count">{getStateCount(state)}</p>
+            </li>
+          ))}
+        </ul>
+        <div style={{width: '100%', padding: '10px 0 20px 0', overflow: 'auto'}}>
+          <Line data={chartData} options={{responsive: true, maintainAspectRatio: false}}/>
+        </div>
+        <div className="totalPrice">총 매출: {data.totalPrice}</div>
       </div>
-    </div>
+    </>
   );
-}
+};
+
+export default Dashboard;
