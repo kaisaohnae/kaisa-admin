@@ -2,6 +2,7 @@
 
 import SiteValidator from '@/components/site-validator';
 import {useState, Suspense} from 'react';
+import Header from "@/components/layout/header";
 
 /**
  * OrgValidator: 페이지 새로고침 및 이동시 공통으로 소속을 검증한다.
@@ -11,8 +12,8 @@ import {useState, Suspense} from 'react';
  * @constructor
  */
 export default function LayoutSub({
-  children
-}: Readonly<{
+                                    children
+                                  }: Readonly<{
   children: React.ReactNode;
 }>) {
   const [isReady, setReady] = useState(false);
@@ -21,8 +22,13 @@ export default function LayoutSub({
   };
   return (
     <Suspense>
-      <>{isReady && children}</>
-      <SiteValidator onReady={onReady} />
+      <div id="container">
+        <Header/>
+        <div id="content">
+          <>{isReady && children}</>
+          <SiteValidator onReady={onReady}/>
+        </div>
+      </div>
     </Suspense>
   );
 }

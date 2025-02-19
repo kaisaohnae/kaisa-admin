@@ -3,14 +3,17 @@ import {useRouter} from '@/components/hooks/use-custom-router';
 import {useAuthStore} from "@/store/use-auth-store";
 import {useSettingStore} from "@/store/use-setting-store";
 import IconLogo from "@/components/icons/icon-logo";
+import useAlertStore from '@/store/use-alert-store';
 
 const Header = () => {
   const auth = useAuthStore();
   const setting = useSettingStore();
+  const alert = useAlertStore();
   const router = useRouter();
 
   // 메뉴 리스트를 useMemo로 저장 (Vue의 computed 대체)
   const menuList = useMemo(() => auth.menuList, [auth.menuList]);
+  const favList = useMemo(() => setting.favList, [setting.favList]);
 
   // 상태 관리 (Vue의 reactive 대체)
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -32,25 +35,28 @@ const Header = () => {
 
   // 즐겨찾기 추가/삭제
   const toggleFav = (menu: any) => {
-    auth.menuList = auth.menuList.map((group: any) => ({
-      ...group,
-      menu: group.menu.map((m: any) =>
-        m.menuId === menu.menuId ? {...m, fav: !m.fav} : m
-      ),
-    }));
-    const idx = setting.favList.findIndex((fav: any) => fav.menuId === menu.menuId);
-    if (idx !== -1) {
-      setting.favList.splice(idx, 1);
-    } else {
-      setting.favList.push(menu);
-    }
+    const updatedFavList = setting.favList.some((fav: any) => fav.menuId === menu.menuId)
+      ? setting.favList.filter((fav: any) => fav.menuId !== menu.menuId)
+      : [...setting.favList, menu];
+    setting.setFavList(updatedFavList); // 상태 업데이트
   };
 
   // 모든 즐겨찾기 삭제
   const closeAll = () => {
-    if (window.confirm("즐겨찾기를 모두 지우시겠습니까?")) {
-      setting.favList = [];
-    }
+    alert.show({
+      message: <p>즐겨찾기를 모두 지우시겠습니까?</p>,
+      button: [
+        {type: 'on', rate: 6, text: '확인', callback: async () => {
+            alert.hide();
+            setting.setFavList([]);
+          }
+        },
+        {type: 'off', rate: 4, text: '취소', callback: async () => {
+            alert.hide();
+          }
+        },
+      ]
+    });
   };
 
   // 메뉴 열기/닫기
@@ -69,6 +75,7 @@ const Header = () => {
 
   // 홈 버튼 클릭
   const clickHome = () => {
+    setting.path = '/';
     router.push({
       pathname: '/',
       query: {}
@@ -77,6 +84,7 @@ const Header = () => {
 
   // 즐겨찾기 클릭
   const clickFav = (fav: any) => {
+    setting.path = fav.path;
     router.push({
       pathname: fav.path,
       query: {}
@@ -86,7 +94,7 @@ const Header = () => {
   return (
     <>
       {/* 헤더 */}
-      <div id="header" className={setting.menuActive ? "menuOn" : ""}>
+      <div id="header" className={setting.menuActive ? 'menuOn' : ''}>
         <div className="btnMenu" onClick={toggleMenu}>
           <ul>
             <li></li>
@@ -107,9 +115,10 @@ const Header = () => {
             </u>
           </li>
         </ul>
+
         <div className="tab">
           <ul>
-            <li className={setting.path === "/main" ? "active" : ""}>
+            <li className={setting.path === "/" ? "active" : ""}>
               <span className="icon home" onClick={clickHome}>
                 &#xe819;
               </span>
@@ -128,9 +137,9 @@ const Header = () => {
       </div>
 
       {/* 사이드바 */}
-      <div id="side" className={setting.menuActive ? "menuOn" : ""}>
+      <div id="side" className={setting.menuActive ? 'menuOn' : ''}>
         <h1 onClick={clickHome}>
-          <IconLogo/>
+          <IconLogo width={100} color={'#999'}/>
         </h1>
         <div className="search">
           <input
@@ -141,37 +150,27 @@ const Header = () => {
           />
         </div>
         <div className="wrap">
-          {searchList.length > 0 && (
-            <div className="searchList">
-              <ul>
-                {searchList.map((menu, idx) => (
-                  <li key={idx} onClick={() => clickMenu(menu)} className={setting.path === menu.path ? "active" : ""}>
-                    <span className="icon pre" dangerouslySetInnerHTML={{__html: menu.icon}}></span>
-                    <span className="name">{menu.menuName}</span>
-                    <span className={`icon fav ${menu.fav ? "on" : ""}`} onClick={() => toggleFav(menu)}>
-                      &#xe807;
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {searchList.length > 0 ? (
+            <ul>
+              {searchList.map((menu, idx) => (
+                <li key={idx} className={`menu ${menu.active ? "on" : ""}`}>
+                  <span className="icon pre" dangerouslySetInnerHTML={{__html: menu.icon}}></span>
+                  <span className="name" onClick={() => clickMenu(menu)}>{menu.menuName}</span>
+                  <span className={`icon fav ${menu.fav ? "on" : ""}`} onClick={() => toggleFav(menu)}>&#xe807;</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <ul>
+              {menuList.map((menu, idx) => (
+                <li key={idx} className={`menu ${menu.active ? "on" : ""}`}>
+                  <span className="icon pre" dangerouslySetInnerHTML={{__html: menu.icon}}></span>
+                  <span className="name" onClick={() => clickMenu(menu)}>{menu.menuName}</span>
+                  <span className={`icon fav ${menu.fav ? "on" : ""}`} onClick={() => toggleFav(menu)}>&#xe807;</span>
+                </li>
+              ))}
+            </ul>
           )}
-          {menuList.map((o, i) => (
-            <div key={i} className={`menu ${o.active ? "on" : ""}`} style={{display: searchList.length === 0 ? "block" : "none"}}>
-              <h2>{o.path}</h2>
-              <ul>
-                {o.menu?.map((menu, idx) => (
-                  <li key={idx} onClick={() => clickMenu(menu)} className={setting.path === menu.path ? "active" : ""}>
-                    <span className="icon pre" dangerouslySetInnerHTML={{__html: menu.icon}}></span>
-                    <span className="name">{menu.menuName}</span>
-                    <span className={`icon fav ${menu.fav ? "on" : ""}`} onClick={() => toggleFav(menu)}>
-                      &#xe807;
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
         </div>
       </div>
     </>

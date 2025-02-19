@@ -32,7 +32,7 @@ service.interceptors.response.use(
     const data: any = error.response?.data;
     if (error.response?.status === 401 || error.response?.status === 403) {
       //alert.open({title: null, message: data.message, redirect: '/login'});
-      return Promise.reject();
+      window.location.href = '/login';
     }
     if (data && data.message) {
       //alert.open({title: null, message: data.message});

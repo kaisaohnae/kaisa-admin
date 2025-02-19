@@ -4,7 +4,6 @@ import {useState, useEffect, useMemo} from 'react';
 import MainService from '@/service/common/main-service';
 import {Line} from 'react-chartjs-2';
 import {Chart, registerables} from 'chart.js';
-import Header from "@/components/layout/header";
 
 Chart.register(...registerables);
 
@@ -58,7 +57,6 @@ const Dashboard = () => {
 
   return (
     <>
-      <Header />
       <div id="main">
         <ul className="orderState">
           {['예약중', '예약취소', '결제취소', '결제완료'].map((state) => (

@@ -8,10 +8,8 @@ type State = {
 };
 
 type Actions = {
-  showAlert: (o: AlertProps) => void;
-  hideAlert: () => void;
-  showError: () => void;
-  hideError: () => void;
+  show: (o: AlertProps) => void;
+  hide: () => void;
 };
 
 /*type ButtonProps = {
@@ -30,17 +28,11 @@ type AlertProps = {
 const useAlertStore = create<State & Actions>((set) => ({
   alert: null,
   error: false,
-  showAlert: (o: AlertProps) => {
+  show: (o: AlertProps) => {
     set(() => ({ alert: o }));
   },
-  hideAlert: () => {
+  hide: () => {
     set(() => ({ alert: null }));
-  },
-  showError: () => {
-    set(() => ({ error: true }));
-  },
-  hideError: () => {
-    set(() => ({ error: false }));
   },
 })) as any;
 
