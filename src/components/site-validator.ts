@@ -7,9 +7,10 @@ import useAuthStore from '@/store/use-auth-store';
 
 type Props = {
   onReady: () => void;
+  onHeader: any;
 };
 
-export default function OrgValidator({onReady}: Props) {
+export default function OrgValidator({onReady, onHeader}: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const auth = useAuthStore();
@@ -19,17 +20,35 @@ export default function OrgValidator({onReady}: Props) {
       onReady();
     } catch (error) {
       console.error('Error fetching data:', error);
-      // 실패 시 처리 로직
-      router.push({
-        pathname: '/error',
-        query: {cd: 'fetch-error'}
-      });
+    }
+  };
+
+  const onRouterCheck = async () => {
+    try {
+      if(pathname === '/') {
+        onHeader(true);
+        return;
+      }
+      const excludeHeader = ['error', 'login', 'logout'];
+      if (excludeHeader.find(keyword => pathname.match(keyword))) {
+        onHeader(false);
+      } else {
+        onHeader(true);
+      }
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
   };
 
   useEffect(() => {
-    if (!auth.token && !auth.menuList && !auth.codeList && !auth.userInfo && pathname !== "/login") {
-      router.replace("/login");
+    const refresh = async () => {
+      await onRouterCheck();
+    };
+    refresh().then();
+
+    if (!auth.token && !auth.menuList && !auth.codeList && !auth.userInfo && pathname !== '/login') {
+      router.replace('/login');
     }
   }, [pathname]);
 

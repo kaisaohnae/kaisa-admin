@@ -1,4 +1,4 @@
-import {useState, useMemo} from "react";
+import {useState, useMemo, useEffect} from "react";
 import {useRouter} from '@/components/hooks/use-custom-router';
 import {useAuthStore} from "@/store/use-auth-store";
 import {useSettingStore} from "@/store/use-setting-store";
@@ -90,7 +90,6 @@ const Header = () => {
       query: {}
     });
   };
-
   return (
     <>
       {/* 헤더 */}

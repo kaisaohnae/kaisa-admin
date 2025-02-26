@@ -1,7 +1,7 @@
 'use client';
 
 import SiteValidator from '@/components/site-validator';
-import {useState, Suspense} from 'react';
+import {useState, Suspense, useEffect} from 'react';
 import Header from "@/components/layout/header";
 
 /**
@@ -11,24 +11,33 @@ import Header from "@/components/layout/header";
  * @param children
  * @constructor
  */
-export default function LayoutSub({
-                                    children
-                                  }: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function LayoutSub({children}: Readonly<{ children: React.ReactNode; }>) {
   const [isReady, setReady] = useState(false);
+  const [isHeader, setHeader] = useState(false);
   const onReady = () => {
     setReady(true);
   };
+  const onHeader = (is: boolean) => {
+    setHeader(is);
+  };
+
+  useEffect(() => {
+    console.log(children);
+  }, [children]);
+
   return (
     <Suspense>
-      <div id="container">
-        <Header/>
-        <div id="content">
-          <>{isReady && children}</>
-          <SiteValidator onReady={onReady}/>
+      {isHeader ? (
+        <div id="container">
+          <Header/>
+          <div id="content">
+            <>{isReady && children}</>
+          </div>
         </div>
-      </div>
+      ): (
+        <>{isReady && children}</>
+      )}
+      <SiteValidator onReady={onReady} onHeader={onHeader}/>
     </Suspense>
   );
 }
